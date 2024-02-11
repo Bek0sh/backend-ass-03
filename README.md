@@ -3,9 +3,7 @@
 ## To start app
 
 ``` bash
-
 node backend/app.js
-
 ```
 
 after you need to go localhost:3000/login
@@ -28,3 +26,16 @@ You can input any topic, and check for news related
 #### 2nd 
 
 2nd is Pixabay, it is openApi to find a lot of pictures for some topics which you can also input
+
+
+
+
+
+### Note 
+you may have some problems with bcrypt
+just try to reinstall it
+
+``` sh
+npm uninstall bcrypt
+npm install bcrypt
+```
