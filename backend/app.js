@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const db = require('./db');
+const History = require('./models/history');
 const authRoutes = require('./router/auth');
 const adminRoutes = require('./router/admin');
 const newsRoutes = require('./router/news');
@@ -25,6 +26,17 @@ app.get('/register', (req, res) => {
 
 app.get('/main', authenticateUser, (req, res) => {
     res.render('main.ejs', { user: req.session.user }); 
+});
+
+app.get('/history', authenticateUser ,async (req, res) => {
+    try {
+        const requests = await History.find({ userId: req.session.user._id }).sort({ timestamp: -1 });
+        
+        res.render('history.ejs', { requests });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.use('/', authenticateUser, newsRoutes)

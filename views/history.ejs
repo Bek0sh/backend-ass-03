@@ -1,33 +1,21 @@
-<!-- views/main.ejs -->
+<!-- views/history.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>Request History</title>
     <link rel="stylesheet" href="/styles.css"> <!-- Link to the CSS file -->
     <style>
-        /* Additional inline styles */
         body {
-            background-color: #f8f8f8;
             font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
         }
-        footer {
-        text-align: center;
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #f8f9fa;
-        color: #333;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-    }
         .container {
             max-width: 800px;
-            margin: 100px auto;
+            margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 5px;
@@ -37,10 +25,26 @@
             color: #333;
             text-align: center;
         }
-        p {
-            text-align: center;
+        ul {
+            list-style: none;
+            padding: 0;
         }
-        .btn {
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .go-to-main {
             display: block;
             width: 200px;
             margin: 20px auto;
@@ -55,28 +59,26 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .btn:hover {
+        .go-to-main:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome <%= user.username %>!</h1>
-        <p>Main content goes here.</p>
-        <br>
-        <% if (user.isAdmin) { %>
-            <a href="/admin" class="btn">Admin Panel</a>
-        <% } %>
-        <a href="/news" class="btn">View News</a>
-        <a href="/pixabay" class="btn">View Images</a>
-        <br>
-        <a href="/history" class="btn">Request History</a>
-        <form action="/auth/logout" method="POST">
-            <button type="submit" class="btn">Logout</button>
-        </form>
-
+        <h1>Request History</h1>
+        <ul>
+            <% requests.forEach(request => { %>
+                <li>
+                    <p><strong>Timestamp:</strong> <%= request.timestamp %></p>
+                    <p><strong>Endpoint:</strong> <%= request.endpoint %></p>
+                    <p>
+                        <a href="<%= request.endpoint + '?' + request.parameters %>">Go back to this page</a>
+                    </p>
+                </li>
+            <% }); %>
+        </ul>
+        <a href="/main" class="go-to-main">Back to Main Page</a>
     </div>
-    <footer>Bekarys Zhuzeyev SE-2205</footer>
 </body>
 </html>
