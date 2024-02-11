@@ -1,0 +1,68 @@
+<!-- views/main.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link to the CSS file -->
+    <style>
+        /* Additional inline styles */
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            text-align: center;
+        }
+        .btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome <%= user.username %>!</h1>
+        <p>Main content goes here.</p>
+        <br>
+        <% if (user.isAdmin) { %>
+            <a href="/admin" class="btn">Admin Panel</a>
+        <% } %>
+        <a href="/news" class="btn">View News</a>
+        <a href="/pixabay" class="btn">View Images</a>
+        <br>
+        <form action="/auth/logout" method="POST">
+            <button type="submit" class="btn">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
