@@ -1,7 +1,7 @@
 // db.js
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/testdb', { 
+mongoose.connect('mongodb+srv://root:1234@cluster0.jlpy0pu.mongodb.net/testdb?retryWrites=true&w=majority', { 
     useNewUrlParser: true, 
     useUnifiedTopology: true,
 })
