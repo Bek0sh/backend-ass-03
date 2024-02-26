@@ -4,7 +4,6 @@ const db = require('./db');
 const axios = require('axios');
 const authRoutes = require('./router/auth');
 const adminRoutes = require('./router/admin');
-const pixabayRoutes = require('./router/pixabay');
 const football = require('./router/football')
 const { authenticateUser, authenticateAdmin } = require('./middleware/auth');
 
@@ -38,9 +37,6 @@ app.get('/main', authenticateUser, async (req, res) => {
 });
 
 app.use('/', authenticateUser, football)
-
-
-app.use('/', authenticateUser, pixabayRoutes)
 
 app.get('/news', async (req, res) => {
     try {
