@@ -1,0 +1,61 @@
+/* styles.css */
+
+/* General styles */
+body {
+    background-color: #f8f8f8;
+    font-family: Arial, sans-serif;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    color: #333;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.container {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+.carousel-inner img {
+    max-width: 60%;
+    height: auto;
+}
+
+/* Navbar styles */
+.navbar-nav .language-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px 10px;
+    margin-right: 10px;
+    color: #333; /* Default color */
+    border-bottom: 2px solid transparent; /* Default border color */
+    transition: color 0.3s, border-bottom-color 0.3s;
+}
+
+.navbar-nav .language-btn.active {
+    color: #007bff; /* Active color */
+    border-bottom-color: #007bff; /* Active border color */
+}

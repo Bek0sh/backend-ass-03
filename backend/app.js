@@ -1,11 +1,12 @@
 const express = require('express');
 const session = require('express-session');
 const db = require('./db');
+const axios = require('axios');
 const History = require('./models/history');
 const authRoutes = require('./router/auth');
 const adminRoutes = require('./router/admin');
-const newsRoutes = require('./router/news');
 const pixabayRoutes = require('./router/pixabay');
+const football = require('./router/football')
 const { authenticateUser, authenticateAdmin } = require('./middleware/auth');
 
 const app = express();
@@ -24,23 +25,44 @@ app.get('/register', (req, res) => {
     res.render('register.ejs'); 
 });
 
-app.get('/main', authenticateUser, (req, res) => {
-    res.render('main.ejs', { user: req.session.user }); 
-});
-
-app.get('/history', authenticateUser ,async (req, res) => {
+app.get('/main', authenticateUser, async (req, res) => {
     try {
-        const requests = await History.find({ userId: req.session.user._id }).sort({ timestamp: -1 });
-        
-        res.render('history.ejs', { requests });
+        let language = req.query.lang; 
+        if (!language || (language !== 'en' && language !== 'ru')) {
+            language = 'en'; 
+        }     
+        res.render('main.ejs', { user: req.session.user ,language: language});
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        console.error('Error fetching news:', error);
+        res.status(500).send('Error fetching news');
     }
 });
 
-app.use('/', authenticateUser, newsRoutes)
+app.use('/', authenticateUser, football)
+
+
 app.use('/', authenticateUser, pixabayRoutes)
+
+app.get('/news', async (req, res) => {
+    try {
+        let language = req.query.lang; 
+        if (!language || (language !== 'en' && language !== 'ru')) {
+            language = 'en'; 
+        }
+        const newsUrl = 'https://newsapi.org/v2/top-headlines';
+        const response = await axios.get(newsUrl, {
+            params: {
+                country: 'us', 
+                apiKey: "2878b42d9cbe498b92950a65ffc9b990"
+            }
+        });
+        const articles = response.data.articles; 
+        res.render('news.ejs', { user: req.session.user ,language: language, articles: articles});
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        res.status(500).send('Error fetching news');
+    }
+})
 
 app.use(authenticateAdmin)
 app.use('', adminRoutes)

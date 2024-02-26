@@ -1,0 +1,105 @@
+<!-- views/football_api.ejs -->
+
+<!DOCTYPE html>
+<html lang="<%= language %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football API</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Custom CSS */
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .match-container {
+            margin-bottom: 20px; /* Add some spacing between match containers */
+        }
+        .match-card {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .match-teams {
+            font-size: 20px;
+        }
+        .match-scores {
+            font-weight: bold;
+            font-size: 18px;
+            color: #007bff;
+        }
+        .not-played {
+            color: #999;
+        }
+    </style></head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/main"><%= language === 'en' ? 'Main page' : 'Главная страница' %></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <% if (user.isAdmin) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin"><%= language === 'en' ? 'Admin Panel' : 'Панель Админа' %></a>
+                </li>
+            <% } %>
+            <li class="nav-item">
+                <a class="nav-link" href="/football"><%= language === 'en' ? 'Football' : 'Футбол' %></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/news"><%= language === 'en' ? 'News' : 'Новости' %></a>
+            </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+            <button class="<%= language === 'en' ? 'active' : '' %> btn btn-outline-primary mr-2" onclick="changeLanguage('en')">English</button>
+            <button class="<%= language === 'ru' ? 'active' : '' %> btn btn-outline-primary" onclick="changeLanguage('ru')">Русский</button>
+        </div>
+        <form class="form-inline my-2 my-lg-0" action="/auth/logout" method="POST">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><%= language === 'en' ? 'Logout' : 'Выйти' %></button>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <h1 class="text-center mb-4">Football Matches</h1>
+    <% matches.forEach(match => { %>
+        <div class="match-container">
+            <div class="card match-card">
+                <div class="card-body">
+                    <h5 class="card-title match-teams"><%= match.homeTeam.name %> vs <%= match.awayTeam.name %></h5>
+                    <% if (match.score.fullTime.homeTeam !== null && match.score.fullTime.awayTeam !== null) { %>
+                        <p class="card-text match-scores"><%= match.score.fullTime.homeTeam %> - <%= match.score.fullTime.awayTeam %></p>
+                    <% } else { %>
+                        <p class="card-text not-played">Not played yet</p>
+                    <% } %>
+                    <ul class="list-unstyled">
+                        <li><strong>Competition:</strong> <%= match.competition.name %></li>
+                        <li><strong>Venue:</strong> <%= match.venue %></li>
+                        <li><strong>Date:</strong> <%= new Date(match.utcDate).toLocaleDateString() %></li>
+                        <li><strong>Status:</strong> <%= match.status %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    <% }); %>
+</div>
+<footer class="mt-5">
+    <div class="container">
+        <p class="text-center">Bekarys Zhuzeyev SE-2205</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    function changeLanguage(lang) {
+        window.location.href = '/football?lang=' + lang;
+    }
+</script>
+</body>
+</html>

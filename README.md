@@ -29,8 +29,6 @@ You can input any topic, and check for news related
 
 
 
-
-
 ### Note 
 you may have some problems with bcrypt
 just try to reinstall it

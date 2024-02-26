@@ -1,117 +1,117 @@
 <!-- views/news.ejs -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- Link to the CSS file -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Additional inline styles */
+        /* Custom CSS */
         body {
-            background-color: #f8f8f8;
+            background-color: #f8f9fa;
+            padding-top: 20px;
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
         .container {
             max-width: 800px;
-            margin: 100px auto;
+        }
+        .article-card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .article-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .article-body {
             padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
+        .article-title {
+            font-size: 24px;
             font-weight: bold;
-        }
-        input[type="text"] {
-            width: calc(100% - 10px);
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        button[type="submit"] {
-            padding: 10px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        footer {
-        text-align: center;
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #f8f9fa;
-        color: #333;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-    }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-        h2 {
             color: #333;
-        }
-        p {
             margin-bottom: 10px;
         }
-        a {
+        .article-description {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .article-link {
             color: #007bff;
             text-decoration: none;
         }
-        a:hover {
+        .article-link:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">News</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <% if (user.isAdmin) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin"><%= language === 'en' ? 'Admin Panel' : 'Панель Админа' %></a>
+                        </li>
+                    <% } %>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/football"><%= language === 'en' ? 'Football' : 'Футбол' %></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pixabay"><%= language === 'en' ? 'News' : 'Новости' %></a>
+                    </li>
+                </ul>
+                <div class="form-inline my-2 my-lg-0">
+                    <button class="<%= language === 'en' ? 'active' : '' %> language-btn" onclick="changeLanguage('en')">English</button>
+                    <button class="<%= language === 'ru' ? 'active' : '' %> language-btn" onclick="changeLanguage('ru')">Русский</button>
+                </div>
+                <form class="form-inline my-2 my-lg-0" action="/auth/logout" method="POST">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <div class="container">
-        <h1>Latest News</h1>
-        <a href="/main" class="btn">Main</a>
-        <form action="/news" method="GET">
-            <label for="topic">Enter topic:</label>
-            <input type="text" id="topic" name="topic" required>
-            <button type="submit">Search</button>
-        </form>
-        <ul>
-            <% articles.forEach(article => { %>
-                <li>
-                    <h2><%= article.title %></h2>
-                    <p><%= article.description %></p>
-                    <p>Source: <%= article.source.name %></p>
-                    <p><a href="<%= article.url %>" target="_blank">Read more</a></p>
-                </li>
-            <% }); %>
-        </ul>
+        <h1 class="mb-4">Latest News</h1>
+        <% articles.forEach(article => { %>
+            <div class="card article-card">
+                <img src="<%= article.urlToImage %>" class="card-img-top article-img" alt="Article Image">
+                <div class="card-body article-body">
+                    <h5 class="card-title article-title"><%= article.title %></h5>
+                    <p class="card-text article-description"><%= article.description %></p>
+                    <a href="<%= article.url %>" class="btn btn-primary article-link">Read More</a>
+                </div>
+            </div>
+        <% }) %>
     </div>
-    <footer>Bekarys Zhuzeyev SE-2205</footer>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-3 mt-5">
+        <div class="container">
+            Bekarys Zhuzeyev SE-2205
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<script>
+    function changeLanguage(lang) {
+        window.location.href = '/news?lang=' + lang;
+    }
+</script>
 </html>

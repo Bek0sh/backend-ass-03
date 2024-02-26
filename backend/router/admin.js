@@ -6,8 +6,12 @@ const User = require('../models/user');
 
 router.get('/admin', async (req, res) => {
     try {
+        let language = req.query.lang; 
+        if (!language || (language !== 'en' && language !== 'ru')) {
+            language = 'en'; 
+        }
         const users = await User.find();
-        res.render('admin.ejs', { users });
+        res.render('admin.ejs', { users: users, language: language, user: req.session.user });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
