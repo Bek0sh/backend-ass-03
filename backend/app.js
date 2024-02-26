@@ -2,7 +2,6 @@ const express = require('express');
 const session = require('express-session');
 const db = require('./db');
 const axios = require('axios');
-const History = require('./models/history');
 const authRoutes = require('./router/auth');
 const adminRoutes = require('./router/admin');
 const pixabayRoutes = require('./router/pixabay');
