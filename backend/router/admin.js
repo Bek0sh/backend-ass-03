@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const Team = require('../models/teams');
+
 
 router.get('/admin', async (req, res) => {
     try {
@@ -10,8 +12,9 @@ router.get('/admin', async (req, res) => {
         if (!language || (language !== 'en' && language !== 'ru')) {
             language = 'en'; 
         }
+        const teams = await Team.find()
         const users = await User.find();
-        res.render('admin.ejs', { users: users, language: language, user: req.session.user });
+        res.render('admin.ejs', { users: users, language: language, user: req.session.user, teams: teams});
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -67,5 +70,7 @@ router.post('/admin/delete/:id', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 module.exports = router;

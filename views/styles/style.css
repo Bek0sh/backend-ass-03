@@ -1,0 +1,28 @@
+
+.center {
+    width: 50%;
+    margin: 2rem auto 5rem; /* Adjust the top margin to 2rem and the bottom margin to 5rem */
+    text-align: center;
+}
+
+.center div {
+    margin-bottom: 10px; /* Отступ между элементами формы */
+}
+
+/* code */
+header {
+    border-radius: 0px 0px 10px 10px; /* Border radius */
+    overflow: hidden; /* Ensure border radius only applies to the bottom */
+}
+
+.item-image {
+    width: 200px; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    object-fit: cover; /* Ensures the image covers the specified dimensions */
+}
+ul {
+    list-style-type: none;
+}
+.carousel-item img {
+    height: 400px; /* Adjust the height as needed */
+}

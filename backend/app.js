@@ -1,12 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const db = require('./db');
+const methodOverride = require('method-override');
 const axios = require('axios');
-const History = require('./models/history');
 const authRoutes = require('./router/auth');
 const adminRoutes = require('./router/admin');
-const pixabayRoutes = require('./router/pixabay');
 const football = require('./router/football')
+const teams = require('./router/teams')
+const Team = require('./models/teams');
 const { authenticateUser, authenticateAdmin } = require('./middleware/auth');
 
 const app = express();
@@ -15,11 +16,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: '1234', resave: false, saveUninitialized: true }));
 
+app.use(methodOverride('_method'));
 app.use('/auth', authRoutes);
 
 app.get('/login', (req, res) => {
     res.render('login.ejs'); 
 });
+app.use('/', teams)
 
 app.get('/register', (req, res) => {
     res.render('register.ejs'); 
@@ -31,17 +34,16 @@ app.get('/main', authenticateUser, async (req, res) => {
         if (!language || (language !== 'en' && language !== 'ru')) {
             language = 'en'; 
         }     
-        res.render('main.ejs', { user: req.session.user ,language: language});
+        const teams = await Team.find();
+        res.render('main.ejs', { user: req.session.user ,language: language, teams: teams});
     } catch (error) {
         console.error('Error fetching news:', error);
         res.status(500).send('Error fetching news');
     }
 });
 
+
 app.use('/', authenticateUser, football)
-
-
-app.use('/', authenticateUser, pixabayRoutes)
 
 app.get('/news', async (req, res) => {
     try {

@@ -66,6 +66,7 @@
             </form>
         </div>
     </div>
+
     <div class="row mt-5">
         <div class="col-md-6 offset-md-3">
             <ul class="list-group">
@@ -76,6 +77,50 @@
                     <span class="badge bg-primary rounded-pill"><%= language === 'en' ? 'Admin' : 'Админ' %></span>
                     <% } %>
                     <form action="/admin/delete/<%= user._id %>" method="post" class="delete-form">
+                        <button type="submit" class="btn btn-danger btn-sm"><%= language === 'en' ? 'Delete' : 'Удалить' %></button>
+                    </form>
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1 class="text-center mb-4"><%= language === 'en' ? 'Teams Management' : 'Управление командами' %></h1>
+            <form action="/add-team" method="post">
+                <div class="mb-3">
+                    <label for="nameEN" class="form-label"><%= language === 'en' ? 'Team Name in English' : 'Название команды на англ:' %>:</label>
+                    <input type="text" id="nameEN" name="nameEN" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="nameRUS" class="form-label"><%= language === 'en' ? 'Team Name in Russian' : 'Название команды на русском:' %>:</label>
+                    <input type="text" id="nameRUS" name="nameRUS" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descriptionEN" class="form-label"><%= language === 'en' ? 'Description in English' : 'Описание команды на англ:' %></label>
+                    <textarea id="descriptionEN" name="descriptionEN" class="form-control" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="descriptionRUS" class="form-label"><%= language === 'en' ? 'Description in Russian' : 'Описание команды на русском:' %></label>
+                    <textarea id="descriptionRUS" name="descriptionRUS" class="form-control" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="imageUrl" class="form-label"><%= language === 'en' ? 'Image URL' : 'URL изображения:' %></label>
+                    <input type="url" id="imageUrl" name="imageUrl" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary"><%= language === 'en' ? 'Add Team' : 'Добавить команду' %></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-6 offset-md-3">
+            <ul class="list-group">
+                <% teams.forEach(team => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <%= language === 'en' ? team.nameEN : team.nameRUS %>
+                    <form action="/team/<%=team._id %>?_method=DELETE" method="post" class="delete-form">
                         <button type="submit" class="btn btn-danger btn-sm"><%= language === 'en' ? 'Delete' : 'Удалить' %></button>
                     </form>
                 </li>

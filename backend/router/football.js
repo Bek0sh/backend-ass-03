@@ -24,20 +24,5 @@ app.get('/football', async (req, res) => {
     }
 });
 
-app.get('/football/:id', async (req, res) => {
-    const matchId = req.params.id;
-    try {
-        const response = await axios.get(`https://api.football-data.org/v2/matches/${matchId}`, {
-            headers: {
-                'X-Auth-Token': apiKey
-            }
-        });
-        const match = response.data;
-        res.json(match);
-    } catch (error) {
-        console.error('Error fetching football match:', error);
-        res.status(500).json({ error: 'Error fetching football match' });
-    }
-});
 
 module.exports = app;
